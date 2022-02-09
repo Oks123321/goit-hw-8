@@ -158,6 +158,8 @@ public class MyLinkedList<T> implements MyList<T> {
         first = last = null;
         size = 0;
     }
-}
+
+    }
+
 
 

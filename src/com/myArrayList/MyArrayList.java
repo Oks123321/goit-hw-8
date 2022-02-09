@@ -1,9 +1,9 @@
 package com.myArrayList;
 
+import java.util.Arrays;
 import java.util.Iterator;
 
 public class MyArrayList<E> implements MyList<E> {
-
 
 
     private E[] values;
@@ -56,15 +56,18 @@ public class MyArrayList<E> implements MyList<E> {
     }
 
     @Override
-    public String clear() {
+    public E[] clear() {
         values = null;
-
-
-        return null;
+        return values;
     }
 
     @Override
     public Iterator<E> iterator() {
         return new ArrayIterator<>(values);
+    }
+
+    @Override
+    public String toString() {
+        return Arrays.toString(values);
     }
 }

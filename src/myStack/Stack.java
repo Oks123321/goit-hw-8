@@ -1,9 +1,13 @@
 package myStack;
 
 public interface Stack <T> {
-    void push(T item);
-    T pop();
+
+
+    void push(int element);
+    int remove();
+    //int peek();
     boolean isEmpty();
+    boolean isFull();
 }
 
 

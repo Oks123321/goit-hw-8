@@ -6,9 +6,9 @@ import myLinkedList.MyLinkedList;
 import java.util.Objects;
 
 public class MyQueue<T> implements MyQueueList<T> {
-    static class Node<T> {
+    public static class Node<T> {
         T element;
-        MyQueue.Node<T> next;
+        public MyQueue.Node<T> next;
 
         public Node(T element) {
             this.element = element;
@@ -63,7 +63,7 @@ public class MyQueue<T> implements MyQueueList<T> {
 
     @Override
     public T poll() {
-
+        get(0);
         return remove(0);
                     }
 
@@ -105,6 +105,8 @@ public class MyQueue<T> implements MyQueueList<T> {
 
     @Override
     public void clear() {
+        size=0;
 
     }
+
 }

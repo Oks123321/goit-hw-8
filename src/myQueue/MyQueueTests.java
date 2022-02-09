@@ -8,18 +8,23 @@ public class MyQueueTests {
         stringMyQueue.add("Three");
         stringMyQueue.add("Four");
 
+        System.out.println(stringMyQueue.get(0));
+        System.out.println(stringMyQueue.get(1));
+        System.out.println(stringMyQueue.get(2));
+        System.out.println(stringMyQueue.get(3));
 
-        //System.out.println(stringMyQueue.size());
-        //System.out.println(stringMyQueue.get(0));
-       // System.out.println(stringMyQueue.get(0));
-        //System.out.println(stringMyQueue.get(1));
-        //System.out.println(stringMyQueue.get(2));
-        //System.out.println(stringMyQueue.get(3));
-        System.out.println(stringMyQueue.poll());
+        System.out.println("stringMyQueue.poll() = " + stringMyQueue.poll());
 
         System.out.println(stringMyQueue.get(0));
         System.out.println(stringMyQueue.get(1));
         System.out.println(stringMyQueue.get(2));
+
+        System.out.println(stringMyQueue.size());
+
+        System.out.println("stringMyQueue.peek() = " + stringMyQueue.peek());
+        stringMyQueue.clear();
+        System.out.println("stringMyQueue.size() = " + stringMyQueue.size());
+
     }
 
 
