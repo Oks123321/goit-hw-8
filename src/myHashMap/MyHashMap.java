@@ -1,6 +1,10 @@
 package myHashMap;
 
-import java.util.*;
+
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
 
 
 public class MyHashMap<K, V> implements MyMap<K, V> {
@@ -232,6 +236,13 @@ public class MyHashMap<K, V> implements MyMap<K, V> {
             return false;
         }
 
+        @Override
+        public String toString() {
+            return "Node{" +
+                    "key=" + key +
+                    ", value=" + value +
+                    '}';
+        }
 
         public void setNodes(List<Node<K, V>> nodes) {
             this.nodes = nodes;
@@ -248,5 +259,6 @@ public class MyHashMap<K, V> implements MyMap<K, V> {
         public void setKey(K key) {
             this.key = key;
         }
+
     }
 }

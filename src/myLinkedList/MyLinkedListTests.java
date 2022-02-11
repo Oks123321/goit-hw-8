@@ -19,7 +19,7 @@ public class MyLinkedListTests {
 
         linkedList.clear();
         System.out.println("stringList.size() = " + linkedList.size());
-
+        System.out.println("linkedList.toString() = " + linkedList.toString());
 
     }
 }

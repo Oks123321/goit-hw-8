@@ -5,17 +5,14 @@ public class MyHashMapTests {
         MyHashMap<String, String> strings = new MyHashMap<>();
         strings.put("Jhon", "a");
         strings.put("Alice", "b");
-        //     strings.insert("Jhon", "c");
-        System.out.println("strings.get(\"Jhon\") = " + strings.get("Jhon"));
-        System.out.println("strings.get(\"Alice\") = " + strings.get("Alice"));
         strings.put("Barbara", "d");
-        System.out.println("strings.get(\"Barbara\") = " + strings.get("Barbara"));
-        strings.put("Barbara","e");
+        strings.put("Andrew", "e");
         System.out.println("strings.get(\"Barbara\") = " + strings.get("Barbara"));
         strings.remove("Barbara");
         System.out.println("strings.get(\"Barbara\") = " + strings.get("Barbara"));
-
-
+        System.out.println("strings.size() = " + strings.size());
+        System.out.println("strings.get(\"Andrew\") = " + strings.get("Andrew"));
+        System.out.println("strings = " + strings);
 
 
     }

@@ -47,6 +47,10 @@ public class MyArrayList<E> implements MyList<E> {
 
     @Override
     public int size() {
+        if (values==null){
+            return 0;
+        }
+        else
         return values.length;
     }
 
@@ -58,7 +62,7 @@ public class MyArrayList<E> implements MyList<E> {
     @Override
     public E[] clear() {
         values = null;
-        return values;
+        return null;
     }
 
     @Override

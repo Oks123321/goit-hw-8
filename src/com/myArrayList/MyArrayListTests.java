@@ -13,7 +13,7 @@ public class MyArrayListTests {
         System.out.println("strings.size() = " + strings.size());
         strings.clear();
         System.out.println("strings = " + strings);
-
+        System.out.println("strings.size() = " + strings.size());
 
 
     }
