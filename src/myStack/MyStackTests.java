@@ -3,29 +3,21 @@ package myStack;
 public class MyStackTests {
 
     public static void main(String[] args) {
-        MyStack <Integer> mStack = new MyStack<>(10);
-
-        mStack.push(79);
-        mStack.push(59);
-        mStack.push(35);
-        mStack.push(24);
-        mStack.push(15);
-
-       /* mStack.remove();
-
-        System.out.print("Стек: ");
-        while (!mStack.isEmpty()) {
-            int value = mStack.remove();
-            System.out.print(value);
-            System.out.print(" ");
-        }
-        System.out.println("");*/
-        //System.out.println("mStack.peek() = " + mStack.peek());
-       // System.out.println("mStack.size() = " + mStack.size());
-        System.out.println("mStack = " + mStack);
-        System.out.println("mStack.size() = " + mStack.size());
-        System.out.println("mStack.peek() = " + mStack.peek());
-
+        MyStack<String> stack = new MyStack<>();
+        stack.add("Lime");
+        stack.add("Banana");
+        stack.add("Orange");
+        System.out.println("stack = " + stack);
+//        System.out.println("stack.remove(0) = " + stack.remove(0));
+        System.out.println("stack.get(0) = " + stack.get(0));
+        System.out.println("stack.get(1) = " + stack.get(1));
+        System.out.println("stack.get(2) = " + stack.get(2));
+//        stack.remove(2);
+//        System.out.println("stack = " + stack);
+        System.out.println("stack.pop() = " + stack.pop());
+        System.out.println("stack = " + stack);
 
     }
+
+
 }

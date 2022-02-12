@@ -1,73 +1,85 @@
 package myStack;
 
+import com.myArrayList.ArrayIterator;
 import myQueue.MyQueue;
 import myQueue.MyQueueList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Objects;
 
-public class MyStack<T> implements Stack<T> {
+public class MyStack<E> implements Stack<E> {
 
-    private int mSize;
-    private int[] stackArray;
-    private int last;
-    private int size;
-
-    public MyStack(int m) {
-        this.mSize = m;
-        stackArray = new int[mSize];
-        last = -1;
-    }
+    private E[] values;
+    E first;
+    E last;
 
 
-    @Override
-    public void push(int element) {
-        stackArray[++last] = element;
+    public MyStack() {
+        values = (E[]) new Object[0];
     }
 
     @Override
-    public int peek() {
-        return stackArray[last];
-    }
-    @Override
-    public int pop() {
-        return stackArray[0];
+    public void add(E e) {
+
+        E[] temp = values;
+        values = (E[]) new Object[temp.length + 1];
+        System.arraycopy(temp, 0, values, 0, temp.length);
+        values[values.length - 1] = e;
+
     }
 
-   /* @Override
+    @Override
     public void remove(int index) {
-        try {
-            T[] temp = stackArray;
-            stackArray = (T[]) new Object[temp.length - 1];
-            System.arraycopy(temp, 0, stackArray, 0, index);
-            int amountElemAfterIndex = temp.length - index - 1;
-            System.arraycopy(temp, index + 1, stackArray, index, amountElemAfterIndex);
-        } catch (ClassCastException ex) {
-            ex.printStackTrace();
-        }
-           }*/
+        E[] temp = values;
+        values = (E[]) new Object[temp.length - 1];
+        System.arraycopy(temp, 0, values, 0, index);
+        int amountElemAfterIndex = temp.length - index - 1;
+        System.arraycopy(temp, index + 1, values, index, amountElemAfterIndex);
+
+    }
 
     @Override
-    public boolean isEmpty() {
-        return (last == -1);
-    }
-@Override
-    public boolean isFull() {
-        return (last == mSize - 1);
+    public E get(int index) {
+        if (values == null) {
+            return null;
+        } else return values[index];
     }
 
     @Override
     public int size() {
-        return stackArray.length;
+        if (values == null) {
+            return 0;
+        } else
+            return values.length;
     }
 
     @Override
-    public String toString() {
-        return Arrays.toString(stackArray);
+    public void clear() {
+        values = null;
+    }
+
+    @Override
+    public E peek() {
+        first = values[0];
+        return first;
+    }
+
+    @Override
+    public E pop() {
+        first = values[values.length - 1];
+        E[] temp = Arrays.copyOf(values,values.length-1);
+
+        values = temp;
+        return first;
     }
 
 
+    @Override
+    public String toString() {
+        return Arrays.toString(values);
+    }
 }
 
 

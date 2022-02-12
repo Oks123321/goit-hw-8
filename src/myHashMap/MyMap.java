@@ -5,4 +5,5 @@ public interface MyMap<K, V> extends Iterable<V>{
     boolean remove (K key);
     V get (K key);
     int size();
+    void clear();
 }

@@ -134,6 +134,11 @@ public class MyHashMap<K, V> implements MyMap<K, V> {
         return size;
     }
 
+    @Override
+    public void clear() {
+
+    }
+
     private int hash(final K key) {
         int hash = 31;
         hash = hash * 17 + key.hashCode();
@@ -242,22 +247,6 @@ public class MyHashMap<K, V> implements MyMap<K, V> {
                     "key=" + key +
                     ", value=" + value +
                     '}';
-        }
-
-        public void setNodes(List<Node<K, V>> nodes) {
-            this.nodes = nodes;
-        }
-
-        public int getHash() {
-            return hash;
-        }
-
-        public void setHash(int hash) {
-            this.hash = hash;
-        }
-
-        public void setKey(K key) {
-            this.key = key;
         }
 
     }

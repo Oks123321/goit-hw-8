@@ -13,6 +13,8 @@ public class MyHashMapTests {
         System.out.println("strings.size() = " + strings.size());
         System.out.println("strings.get(\"Andrew\") = " + strings.get("Andrew"));
         System.out.println("strings = " + strings);
+        strings.clear();
+        System.out.println("strings.get(\"Alice\") = " + strings.get("Alice"));
 
 
     }

@@ -1,16 +1,21 @@
 package myStack;
 
-public interface Stack <T> {
+public interface Stack <E> {
 
 
-    void push(int element);
-    //int remove();
-    int peek();
-    boolean isEmpty();
-    boolean isFull();
+    void add(E e);
+
+    void remove(int index);
+
+    E get(int index);
+
     int size();
-    int pop();
-    //void remove(int index);
+
+    void clear();
+
+    E peek(); //LIFO
+
+    E pop(); //LIFO and remove
 }
 
 

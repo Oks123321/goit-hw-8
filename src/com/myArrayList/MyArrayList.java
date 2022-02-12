@@ -13,36 +13,30 @@ public class MyArrayList<E> implements MyList<E> {
     }
 
     @Override
-    public boolean add(E e) {
-        try {
+    public void add(E e) {
 
-            E[] temp = values;
+           E[] temp = values;
             values = (E[]) new Object[temp.length + 1];
             System.arraycopy(temp, 0, values, 0, temp.length);
             values[values.length - 1] = e;
-            return true;
-        } catch (ClassCastException ex) {
-            ex.printStackTrace();
-        }
-        return false;
+
     }
 
     @Override
     public void remove(int index) {
-        try {
             E[] temp = values;
             values = (E[]) new Object[temp.length - 1];
             System.arraycopy(temp, 0, values, 0, index);
             int amountElemAfterIndex = temp.length - index - 1;
             System.arraycopy(temp, index + 1, values, index, amountElemAfterIndex);
-        } catch (ClassCastException ex) {
-            ex.printStackTrace();
-        }
-    }
+            }
 
     @Override
     public E get(int index) {
-        return values[index];
+        if (values==null){
+            return null;
+        }
+      else return values[index];
     }
 
     @Override
@@ -60,9 +54,8 @@ public class MyArrayList<E> implements MyList<E> {
     }
 
     @Override
-    public E[] clear() {
+    public void clear() {
         values = null;
-        return null;
     }
 
     @Override
