@@ -97,13 +97,15 @@ public class MyHashMap<K, V> implements MyMap<K, V> {
             return false;
 
         if (hashTable[index].getNodes().size() == 1) {
-            hashTable[index].getNodes().remove(0);
+            hashTable[index] = null;
+            size--;
             return true;
         }
         List<Node<K, V>> nodeList = hashTable[index].getNodes();
         for (Node<K, V> node : nodeList) {
             if (key.equals(node.getKey())) {
                 nodeList.remove(node);
+                size--;
                 return true;
             }
         }
@@ -115,19 +117,21 @@ public class MyHashMap<K, V> implements MyMap<K, V> {
         int index = hash(key);
         if (index < hashTable.length &&
                 hashTable[index] != null) {
-            if (hashTable[index].getNodes().size()==1){
+            if (hashTable[index].getNodes().size() == 1) {
                 return hashTable[index].getNodes().get(0).getValue();
             }
             List<Node<K, V>> list = hashTable[index].getNodes();
             for (Node<K, V> node : list) {
                 if (key.equals(node.getKey())) {
                     return node.getValue;
+
                 }
             }
         }
 
         return null;
     }
+
     @Override
     public int size() {
         return size;
