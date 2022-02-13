@@ -1,6 +1,6 @@
 package myLinkedList;
 
-public interface MyList<T>{
+public interface MyList<T> {
 
 
     void add(T element);

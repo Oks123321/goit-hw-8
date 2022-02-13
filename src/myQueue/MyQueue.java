@@ -65,37 +65,44 @@ public class MyQueue<T> implements MyQueueList<T> {
     public T poll() {
         get(0);
         return remove(0);
-                    }
+    }
 
     @Override
     public T get(int index) {
-        Objects.checkIndex(index, size);
-        return getNodeByIndex(index).element;
-
-
+        if (index > size - 1) {
+            return null;
+        } else {
+            Objects.checkIndex(index, size);
+            return getNodeByIndex(index).element;
+        }
     }
 
 
     @Override
     public T remove(int index) {
-        Objects.checkIndex(index, size);
-        T removedElement;
-        if (index == 0) {
-            removedElement = first.element;
-            first = first.next;
-            if (first == null) {
-                last = null;
-            }
+        if (index > size - 1) {
+            return null;
         } else {
-            MyQueue.Node<T> prev = getNodeByIndex(index - 1);
-            removedElement = prev.next.element;
-            prev.next = prev.next.next;
-            if (index == size - 1) {
-                last = prev;
+
+            Objects.checkIndex(index, size);
+            T removedElement;
+            if (index == 0) {
+                removedElement = first.element;
+                first = first.next;
+                if (first == null) {
+                    last = null;
+                }
+            } else {
+                MyQueue.Node<T> prev = getNodeByIndex(index - 1);
+                removedElement = prev.next.element;
+                prev.next = prev.next.next;
+                if (index == size - 1) {
+                    last = prev;
+                }
             }
+            size--;
+            return removedElement;
         }
-        size--;
-        return removedElement;
     }
 
     @Override
@@ -105,7 +112,7 @@ public class MyQueue<T> implements MyQueueList<T> {
 
     @Override
     public void clear() {
-        size=0;
+        size = 0;
 
     }
 

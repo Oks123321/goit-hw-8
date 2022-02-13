@@ -32,16 +32,22 @@ public class MyStack<E> implements Stack<E> {
 
     @Override
     public void remove(int index) {
-        E[] temp = values;
-        values = (E[]) new Object[temp.length - 1];
-        System.arraycopy(temp, 0, values, 0, index);
-        int amountElemAfterIndex = temp.length - index - 1;
-        System.arraycopy(temp, index + 1, values, index, amountElemAfterIndex);
-
+        if (index > values.length - 1) {
+            System.out.println("null");
+        } else {
+            E[] temp = values;
+            values = (E[]) new Object[temp.length - 1];
+            System.arraycopy(temp, 0, values, 0, index);
+            int amountElemAfterIndex = temp.length - index - 1;
+            System.arraycopy(temp, index + 1, values, index, amountElemAfterIndex);
+        }
     }
 
     @Override
     public E get(int index) {
+        if (index > values.length - 1) {
+            return null;
+        }
         if (values == null) {
             return null;
         } else return values[index];
@@ -69,7 +75,7 @@ public class MyStack<E> implements Stack<E> {
     @Override
     public E pop() {
         first = values[values.length - 1];
-        E[] temp = Arrays.copyOf(values,values.length-1);
+        E[] temp = Arrays.copyOf(values, values.length - 1);
 
         values = temp;
         return first;

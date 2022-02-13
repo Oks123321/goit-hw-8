@@ -16,6 +16,11 @@ public class MyStackTests {
 //        System.out.println("stack = " + stack);
         System.out.println("stack.pop() = " + stack.pop());
         System.out.println("stack = " + stack);
+        stack.size();
+        stack.remove(5);
+        System.out.println("stack.size() = " + stack.size());
+        System.out.println("stack.get(5) = " + stack.get(5));
+
 
     }
 

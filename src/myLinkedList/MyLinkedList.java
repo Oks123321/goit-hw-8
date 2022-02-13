@@ -33,7 +33,7 @@ public class MyLinkedList<T> implements MyList<T> {
             first = last = newNode;
         } else {
             last.next = newNode;
-            last =newNode;
+            last = newNode;
         }
         size++;
     }
@@ -159,7 +159,7 @@ public class MyLinkedList<T> implements MyList<T> {
         size = 0;
     }
 
-    }
+}
 
 
 

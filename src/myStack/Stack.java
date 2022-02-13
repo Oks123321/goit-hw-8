@@ -1,6 +1,6 @@
 package myStack;
 
-public interface Stack <E> {
+public interface Stack<E> {
 
 
     void add(E e);

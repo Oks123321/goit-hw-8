@@ -7,18 +7,11 @@ public class MyArrayListTests {
         strings.add("second");
         strings.add("third");
         System.out.println("strings = " + strings);
-        strings.remove(1);
+        strings.remove(0);
         System.out.println("strings = " + strings);
-        System.out.println("strings.get(1) = " + strings.get(1));
+        strings.remove(3);
+        System.out.println("strings.get(3) = " + strings.get(3));
         System.out.println("strings.size() = " + strings.size());
-        System.out.println("strings = " + strings);
-        System.out.println("strings.size() = " + strings.size());
-        System.out.println("strings.get(1) = " + strings.get(1));
-
-
-        strings.clear();
-        System.out.println("strings = " + strings);
-        System.out.println("strings.get(1) = " + strings.get(1));
 
 
     }

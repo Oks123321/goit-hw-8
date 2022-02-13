@@ -15,37 +15,42 @@ public class MyArrayList<E> implements MyList<E> {
     @Override
     public void add(E e) {
 
-           E[] temp = values;
-            values = (E[]) new Object[temp.length + 1];
-            System.arraycopy(temp, 0, values, 0, temp.length);
-            values[values.length - 1] = e;
+        E[] temp = values;
+        values = (E[]) new Object[temp.length + 1];
+        System.arraycopy(temp, 0, values, 0, temp.length);
+        values[values.length - 1] = e;
 
     }
 
     @Override
     public void remove(int index) {
+        if (index > values.length - 1) {
+            System.out.println("null");
+        } else {
             E[] temp = values;
             values = (E[]) new Object[temp.length - 1];
             System.arraycopy(temp, 0, values, 0, index);
             int amountElemAfterIndex = temp.length - index - 1;
             System.arraycopy(temp, index + 1, values, index, amountElemAfterIndex);
-            }
+        }
+    }
 
     @Override
     public E get(int index) {
-        if (values==null){
+        if (index > values.length - 1) {
             return null;
         }
-      else return values[index];
+        if (values == null) {
+            return null;
+        } else return values[index];
     }
 
     @Override
     public int size() {
-        if (values==null){
+        if (values == null) {
             return 0;
-        }
-        else
-        return values.length;
+        } else
+            return values.length;
     }
 
     @Override
