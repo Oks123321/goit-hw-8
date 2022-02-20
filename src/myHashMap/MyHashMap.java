@@ -1,256 +1,233 @@
 package myHashMap;
-
-
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Objects;
 
+public class MyHashMap<K, V> implements Map<K, V> {
 
-public class MyHashMap<K, V> implements MyMap<K, V> {
-    private Node<K, V>[] hashTable;
+    private static final int initialCapacity = 1 << 4; // its always a power of 2
+    private Node<K, V>[] nodes;
     private int size = 0;
-    private float threshold;
+    private double loadFactor = 0.75;
+    private int capacity = initialCapacity;
 
     public MyHashMap() {
-        hashTable = new Node[16];
-        threshold = hashTable.length * 0.75f;
+        this(initialCapacity);
     }
 
-    @Override
-    public boolean put(final K key, final V value) {
-        if (size + 1 >= threshold) {
-            threshold *= 2;
-            arrayDoubling();
-        }
-        Node<K, V> newNode = new Node<>(key, value);
-        int index = newNode.hash();
-
-        if (hashTable[index] == null) {
-            return simpleAdd(index, newNode);
-        }
-        List<Node<K, V>> nodeList = hashTable[index].getNodes();
-
-        for (Node<K, V> node : nodeList) {
-            if (keyExistButValueNew(node, newNode, value) ||
-                    collisionProcessing(node, newNode, nodeList)
-            ) {
-                return true;
-            }
-        }
-        return false;
+    public MyHashMap(int size) {
+        this.capacity = size;
+        nodes = new Node[size];
     }
 
-    private boolean simpleAdd(int index, Node<K, V> newNode) {
-        hashTable[index] = new Node<>(null, null);
-        hashTable[index].getNodes().add(newNode);
-        size++;
-        return true;
+    public boolean isEmpty() {
+        return (size == 0);
+    }
+@Override
+    public int size() {
+        return size;
     }
 
-    private boolean keyExistButValueNew(
-            final Node<K, V> nodeFromList,
-            final Node<K, V> newNode,
-            final V value) {
-        if (newNode.getKey().equals(nodeFromList.getKey()) &&
-                !newNode.getValue().equals(nodeFromList.getValue)) ;
-        {
-            nodeFromList.setValue(value);
-            return true;
-        }
-
+    public Node[] nodes() {
+        return nodes.clone();
     }
 
-    private boolean collisionProcessing(
-            final Node<K, V> nodeFromList,
-            final Node<K, V> newNode,
-            final List<Node<K, V>> nodes) {
-        if (newNode.hashCode() == nodeFromList.hashCode() &&
-                !Objects.equals(newNode.key, nodeFromList.key) &&
-                !Objects.equals(newNode.value, nodeFromList.value)
-        ) {
-            nodes.add(newNode);
-            size++;
-            return true;
-        }
-        return false;
+    public boolean containsKey(Object k) {
+        return get(k) != null;
     }
-
-    private void arrayDoubling() {
-        Node<K, V>[] oldHashTable = hashTable;
-        hashTable = new Node[oldHashTable.length * 2];
-        size = 0;
-        for (Node<K, V> node : oldHashTable) {
-            if (node != null) {
-                for (Node<K, V> n : node.getNodes()) {
-                    put(n.key, n.value);
-                }
-            }
+@Override
+    public V get(Object k) {
+        if (k == null) {
+            return nodes[0].value;
         }
-    }
-
-
-    @Override
-    public boolean remove(K key) {
-        int index = hash(key);
-        if (hashTable[index] == null)
-            return false;
-
-        if (hashTable[index].getNodes().size() == 1) {
-            hashTable[index] = null;
-            size--;
-            return true;
+        int pos = hash(k);
+        Node<K, V> node = nodes[pos];
+        if (node == null) {
+            return null;
         }
-        List<Node<K, V>> nodeList = hashTable[index].getNodes();
-        for (Node<K, V> node : nodeList) {
-            if (key.equals(node.getKey())) {
-                nodeList.remove(node);
-                size--;
-                return true;
-            }
+
+        while (node.next != null && !Objects.equals(node.key, k)) {
+            node = node.next;
         }
-        return false;
-    }
 
-    @Override
-    public V get(final K key) {
-        int index = hash(key);
-        if (index < hashTable.length &&
-                hashTable[index] != null) {
-            if (hashTable[index].getNodes().size() == 1) {
-                return hashTable[index].getNodes().get(0).getValue();
-            }
-            List<Node<K, V>> list = hashTable[index].getNodes();
-            for (Node<K, V> node : list) {
-                if (key.equals(node.getKey())) {
-                    return node.getValue;
-
-                }
-            }
+        if (Objects.equals(node.key, k)) {
+            return node.value;
         }
 
         return null;
     }
 
-    @Override
-    public int size() {
-        return size;
+    private int hash(Object k) {
+        return Objects.hash(k) % nodes.length;
     }
 
-    @Override
-    public void clear() {
+    public void print() {
+        System.out.println(Arrays.toString(nodes));
+    }
+@Override
+    public V put(K k, V v) {
+        if (shouldResize()) {
+            resize();
+        }
+        Node node = new Node(k, v, null);
+        // handle null case.
+        if (k == null) {
+            Node nullNode = nodes[0];
+            if (nullNode != null) {
+                node.next = nullNode;
+                nodes[0] = node;
+            } else {
+                nodes[0] = node;
+                size++;
+            }
+            return v;
+        }
 
+        // find the bucket
+        int pos = hash(k);
+        if (putInternal(node, nodes, pos) != null) {
+            size++;
+            return v;
+        }
+
+        return v;
     }
 
-    private int hash(final K key) {
-        int hash = 31;
-        hash = hash * 17 + key.hashCode();
-        return hash % hashTable.length;
+    private V putInternal(Node<K, V> node, Node[] entries, int pos) {
+        Node<K, V> existing = entries[pos];
+        if (existing != null) {
+            // if key is same, then update the value
+            if (Objects.equals(existing.key, node.key)) {
+                existing.value = node.value;
+            } else {
+                System.out.println("Found collision for put for key:: " + node.key + " Value ::" + node.value);
+                // insert at the head of next (o(1) operation)
+                Node tmp = existing.next;
+                node.next = tmp;
+                existing.next = node;
+            }
+        } else {
+            entries[pos] = node;
+        }
+
+        return node.value;
     }
 
+    private boolean shouldResize() {
+        return this.size > Math.ceil((double) this.capacity * this.loadFactor);
+    }
 
-    @Override
-    public Iterator<V> iterator() {
-        return new Iterator<V>() {
-            int counterArray = 0;
-            int valuesCounter = 0;
-            Iterator<Node<K, V>> subIterator = null;
-
-            @Override
-            public boolean hasNext() {
-                if (valuesCounter == size)
-                    return false;
-
-                if (subIterator == null || !subIterator.hasNext()) {
-                    if (moveToNextCell()) {
-                        subIterator = hashTable[counterArray].getNodes().iterator();
-                    } else {
-                        return false;
-                    }
+    private void resize() {
+        capacity = capacity * 2;
+        int i = 0;
+        Node<K, V>[] oldTable = nodes;
+        // reset current state
+        nodes = new Node[capacity];
+        Arrays.fill(nodes, null);
+        size = 0;
+        for (Node<K, V> node : oldTable) {
+            // we need to read the nodes again
+            // and insert it back, as bucket size increased
+            // there should be a chance to reduce collision with new size
+            // as long as no poor equals and hashcode
+            Node<K, V> tmp = node;
+            if (tmp != null) {
+                while (tmp != null) {
+                    put(tmp.key, tmp.value);
+                    tmp = tmp.next;
                 }
-                return subIterator.hasNext();
-            }
 
-            private boolean moveToNextCell() {
-                counterArray++;
-                while (hashTable[counterArray] == null) {
-                    counterArray++;
+            }
+        }
+        System.out.println("Done Resize, New Capacity ::"+ capacity);
+    }
+@Override
+    public V remove(Object k) {
+        int pos = hash(k);
+        Node<K, V> node = nodes[pos];
+        if(node == null) return null;
+
+        if (Objects.equals(node.key, k)) {
+
+            // if deleted node as nodes on it, lets give them a chance to re insert it back
+            if(node.next != null) {
+                Node<K,V> tmp = node.next;
+                while(tmp != null) {
+                    put(tmp.key, tmp.value);
+                    tmp = tmp.next;
                 }
-                return hashTable[counterArray] != null;
             }
-
-
-            @Override
-            public V next() {
-                valuesCounter++;
-                return subIterator.next().getValue();
+            // mark current bukcet pos null as head is deleted now
+            nodes[pos] = null;
+            size--;
+            return node.value;
+        }
+        // collision state, so we need find and delete and reattach nodes
+        Node<K, V> head = node.next;
+        Node<K, V> parent = node;
+        // 1 [2,3,4]
+        while (head != null) {
+            if (Objects.equals(head.key, k)) {
+                // re attach nodes
+                parent.next = head.next;
+                size--;
+                return head.value;
             }
-        };
+            parent = head;
+            head = head.next;
+        }
+
+        return null;
+    }
+    void clear(){
+        for(int i = 0; i< nodes.length-1; i++ ){
+            nodes[i]=null;
+            size=0;
+
+        }
     }
 
 
-    private class Node<K, V> {
-        public V getValue;
-        private List<Node<K, V>> nodes;
-        public int hash;
-        private K key;
-        private V value;
+}
 
-        private Node(K key, V value) {
-            this.key = key;
-            this.value = value;
-            nodes = new LinkedList<Node<K, V>>();
+class Node<K, V> {
+    K key;
+    V value;
+    Node<K, V> next;
+
+    public Node(K key, V value, Node<K, V> next) {
+        this.key = key;
+        this.value = value;
+        this.next = next;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+
         }
 
-        private List<Node<K, V>> getNodes() {
-            return nodes;
-        }
-
-        private int hash() {
-            return hashCode() % hashTable.length;
-        }
-
-        private K getKey() {
-            return key;
-        }
-
-        private V getValue() {
-            return value;
-        }
-
-        private void setValue(V value) {
-            this.value = value;
-        }
-
-        @Override
-        public int hashCode() {
-            hash = 31;
-            hash = hash * 17 + key.hashCode();
-            return hash;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (obj instanceof Node) {
-                Node<K, V> node = (Node) obj;
-                if (this == obj)
-                    return (Objects.equals(key, node.getKey()) &&
-                            Objects.equals(value, node.getValue()) ||
-                            Objects.equals(hash, node.hashCode()));
-
-            }
+        if (!(o instanceof Node)) {
             return false;
         }
 
-        @Override
-        public String toString() {
-            return "Node{" +
-                    "key=" + key +
-                    ", value=" + value +
-                    '}';
-        }
+        Node e = (Node) o;
+        return Objects.equals(e.key, this.key)
+                && Objects.equals(e.value, this.value);
+    }
 
+    @Override
+    public String toString() {
+        return "Entry{" +
+                "key=" + key +
+                ", value=" + value +
+                ", next=" + next +
+                '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.key, this.value);
     }
 }
